@@ -1,0 +1,14 @@
+{% extends 'orders/base.html' %}
+{% block content %}
+<h1>{{ entity_name_plural|capfirst }}</h1>
+{% with create_url='orders:'|add:route_name|add:'-create' update_url='orders:'|add:route_name|add:'-update' delete_url='orders:'|add:route_name|add:'-delete' %}
+<p><a href="{% url create_url %}">Agregar {{ entity_name }}</a></p>
+<ul>
+    {% for object in object_list %}
+    <li>{{ object }} — <a href="{% url update_url object.pk %}">Editar</a> | <a href="{% url delete_url object.pk %}">Eliminar</a></li>
+    {% empty %}
+    <li>No hay registros.</li>
+    {% endfor %}
+</ul>
+{% endwith %}
+{% endblock %}
