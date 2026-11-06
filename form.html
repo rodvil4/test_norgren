@@ -1,0 +1,12 @@
+{% extends 'orders/base.html' %}
+{% block content %}
+<h1>{% if object %}Editar{% else %}Agregar{% endif %} {{ entity_name }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+{% with list_url='orders:'|add:route_name|add:'-list' %}
+<p><a href="{% url list_url %}">Cancelar</a></p>
+{% endwith %}
+{% endblock %}

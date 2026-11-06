@@ -1,0 +1,46 @@
+{% extends 'orders/base.html' %}
+{% block content %}
+<h1>Órdenes de venta</h1>
+<p><a href="{% url 'orders:ordenes-create' %}">Agregar orden de venta</a></p>
+{% for order in object_list %}
+<section aria-labelledby="order-{{ order.pk }}">
+    <h2 id="order-{{ order.pk }}">Orden {{ order.order_number }} (ID {{ order.pk }})</h2>
+    <p>
+        <strong>Cliente:</strong> {{ order.customer }} |
+        <strong>Fecha:</strong> {{ order.order_date|date:"d/m/Y" }} |
+        <strong>Importe total:</strong> {{ order.total_amount }}
+    </p>
+    <p><a href="{% url 'orders:ordenes-update' order.pk %}">Editar</a> |
+       <a href="{% url 'orders:ordenes-delete' order.pk %}">Eliminar</a></p>
+    <h3>Detalles</h3>
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Línea</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio unitario</th>
+                    <th scope="col">Total de línea</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detail in order.salesorderdetail_set.all %}
+                <tr>
+                    <td>{{ detail.line_number }}</td>
+                    <td>{{ detail.product }}</td>
+                    <td>{{ detail.quantity }}</td>
+                    <td>{{ detail.unit_price }}</td>
+                    <td>{{ detail.line_total }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">Esta orden no tiene detalles.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% empty %}
+<p>No hay registros.</p>
+{% endfor %}
+{% endblock %}
